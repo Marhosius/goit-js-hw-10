@@ -3,7 +3,7 @@ import { RestCountriesAPI } from './js/fetchCountries';
 import Notiflix from 'notiflix';
 var debounce = require('lodash.debounce');
 
-const DEBOUNCE_DELAY = 1300;
+const DEBOUNCE_DELAY = 300;
 
 const inputEl = document.querySelector('#search-box');
 const countryListEl = document.querySelector('.country-list');
@@ -19,29 +19,42 @@ function onInputSearch(el) {
     restCountriesAPI.fetchCountries().then(res => {
         if (res.length > 10) {
             Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
+            countryListEl.innerHTML = ``;
+            countryInfoEl.innerHTML = ``;
             return
         } else if (res.length === 1) {
-            console.dir(res[0]);
+            countryListEl.innerHTML = ``;
             const { capital, flags, languages, name, population } = res[0];
-            console.log(capital, flags.svg, languages, name, population);
             const infoHTML = `
-            <svg class="country-info__flag" width="50" height="50"> <use href=${flags.svg}></use></svg>
+            <img src="${flags.svg}" alt="${flags.alt}" width="120">
             <p class="country-info__name">${name.official}</p>
-            <p class="country-info__capital">${capital[0]}</p>
-            <p class="country-info__population">${population}</p>
-            <p class="country-info__languages">${languages}</p>`;
+            <p class="country-info__capital">Capital: ${capital[0]}</p>
+            <p class="country-info__population">Population: ${population}</p>
+            <p class="country-info__languages">Languages: ${Object.values(languages)}</p>`;
             countryInfoEl.innerHTML = infoHTML;
             return
         } else {
-            console.log(`final`);
+            countryInfoEl.innerHTML = ``;
+            let htmlList = res.map((element) => {
+                const { flags, name } = element;
+                return (`
+            <li class="country-list__item">
+            <img src="${flags.svg}" alt="${flags.alt}" class="country-list__img" width="40">
+            <p class="country-list__text">${name.official}</p>
+            </li>`);
+            })
+            countryListEl.innerHTML = htmlList.join("");
+
         }
 
     }).catch((err) => {
         if (err.message === '404') {
+            countryListEl.innerHTML = ``;
+            countryInfoEl.innerHTML = ``;
             Notiflix.Notify.failure("Oops, there is no country with that name");
             return
         }
-        return console.dir(err)
+        return console.log(err)
     })
 
 
