@@ -26,11 +26,11 @@ function onInputSearch(el) {
             countryListEl.innerHTML = ``;
             const { capital, flags, languages, name, population } = res[0];
             const infoHTML = `
-            <img src="${flags.svg}" alt="${flags.alt}" width="120">
+            <img class="country-info__img" src="${flags.svg}" alt="${flags.alt}" width="40" height="30">
             <p class="country-info__name">${name.official}</p>
-            <p class="country-info__capital">Capital: ${capital[0]}</p>
-            <p class="country-info__population">Population: ${population}</p>
-            <p class="country-info__languages">Languages: ${Object.values(languages)}</p>`;
+            <p class="country-info__capital"><span class="country-info__span">Capital: </span>${capital[0]}</p>
+            <p class="country-info__population"><span class="country-info__span">Population: </span>${population}</p>
+            <p class="country-info__languages"><span class="country-info__span">Languages: </span>${Object.values(languages)}</p>`;
             countryInfoEl.innerHTML = infoHTML;
             return
         } else {
@@ -39,7 +39,7 @@ function onInputSearch(el) {
                 const { flags, name } = element;
                 return (`
             <li class="country-list__item">
-            <img src="${flags.svg}" alt="${flags.alt}" class="country-list__img" width="40">
+            <img src="${flags.svg}" alt="${flags.alt}" class="country-list__img" width="24" height="24">
             <p class="country-list__text">${name.official}</p>
             </li>`);
             })
