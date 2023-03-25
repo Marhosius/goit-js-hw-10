@@ -1,4 +1,4 @@
-
+import Notiflix from 'notiflix';
 
 export class RestCountriesAPI {
     #BASE_URL = 'https://restcountries.com/v3.1/';
